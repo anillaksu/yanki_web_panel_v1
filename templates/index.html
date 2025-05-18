@@ -1,0 +1,20 @@
+<!DOCTYPE html><html><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Yankı Panel</title><link rel="stylesheet" href="/static/style.css">
+</head><body><h1>YANKI</h1>
+<textarea id="text" placeholder="Bir cümle yaz..." rows="4"></textarea><br>
+<button id="btn">YANKILA</button><p id="msg"></p>
+<video id="vid" controls style="display:none;width:100%;margin-top:10px;"></video>
+<script>
+async function yankila(){
+  const t=document.getElementById('text').value.trim();
+  if(!t){alert('Metin gerek');return;}
+  document.getElementById('msg').innerText='Üretiyor...';
+  const r=await fetch('/generate/scene',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:t})});
+  if(!r.ok){document.getElementById('msg').innerText='Hata';return;}
+  const d=await r.json();
+  document.getElementById('msg').innerText='Hazır!';
+  const v=document.getElementById('vid');v.src=d.video_url;v.style.display='block';
+}
+document.getElementById('btn').onclick=yankila;
+</script></body></html>
